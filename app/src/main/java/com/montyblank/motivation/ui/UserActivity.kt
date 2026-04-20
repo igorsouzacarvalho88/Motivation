@@ -1,4 +1,4 @@
-package com.montyblank.motivation
+package com.montyblank.motivation.ui
 
 import android.os.Bundle
 import android.view.View
@@ -6,19 +6,23 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.montyblank.motivation.databinding.ActivityMainBinding
+import com.montyblank.motivation.R
+import com.montyblank.motivation.databinding.ActivityUserBinding
+import com.montyblank.motivation.helper.SecurityPreferences
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class UserActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var binding: ActivityUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding= ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setContentView(R.layout.activity_main)
+
+        setContentView(R.layout.activity_user)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -29,17 +33,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
     override fun onClick(v: View) {
-        if(v.id == R.id.button_new_phrase){
-            handleNewPhrase()
+        if (v.id == R.id.button_save ){
+            handleSave()
         }
     }
-
-    private fun handleNewPhrase(){
+    private fun handleSave(){
+        SecurityPreferences(applicationContext)
 
     }
     private fun setListeners(){
-        binding.buttonNewPhrase.setOnClickListener(this)
-    }
+        binding.buttonSave.setOnClickListener (this)
 
+    }
 
 }

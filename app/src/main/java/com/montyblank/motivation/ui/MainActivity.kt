@@ -1,4 +1,4 @@
-package com.montyblank.motivation
+package com.montyblank.motivation.ui
 
 import android.os.Bundle
 import android.view.View
@@ -6,21 +6,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.montyblank.motivation.databinding.ActivityUserBinding
+import com.montyblank.motivation.R
+import com.montyblank.motivation.databinding.ActivityMainBinding
 
-class UserActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-
-    private lateinit var binding: ActivityUserBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding= ActivityUserBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        setContentView(R.layout.activity_user)
+        setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -31,15 +30,17 @@ class UserActivity : AppCompatActivity(), View.OnClickListener {
 
     }
     override fun onClick(v: View) {
-        if (v.id == R.id.button_save ){
-            handleSave()
+        if(v.id == R.id.button_new_phrase){
+            handleNewPhrase()
         }
     }
-    private fun handleSave(){
+
+    private fun handleNewPhrase(){
 
     }
     private fun setListeners(){
-
+        binding.buttonNewPhrase.setOnClickListener(this)
     }
+
 
 }
