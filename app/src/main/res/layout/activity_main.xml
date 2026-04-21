@@ -83,7 +83,7 @@
     android:layout_marginTop="16dp"
     android:layout_marginBottom="32dp"
     android:backgroundTint="@color/purple_dark"
-    android:fontFamily="@font/cabin"
+    android:fontFamily="@font/cabin_sketch"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:text="@string/button_new_phrase"

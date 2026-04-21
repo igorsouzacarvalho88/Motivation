@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var securityPreferences: SecurityPreferences
 
 
-    private var filter  : Int = MotivationConstants.PHRASE.ALL
+    private var filter  : Int = MotivationConstants.PHRASEFILTER.ALL
     private val phraseRepository = PhraseRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * Atualiza frase de motivação
      * */
     private fun refreshPhrase(){
-        binding.textviewPhrase.text = phraseRepository.getPhrase(filter, Locale.getDefault().language)
+        binding.textPhrase.text = phraseRepository.getPhrase(filter, Locale.getDefault().language)
 
         /*
            // Variações que podem ser feitas para obtenção da localização do dispotivo
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * */
     private fun showUserName() {
         val name = securityPreferences.getStoreString(MotivationConstants.KEY.PERSON_NAME)
-        binding.textviewName.text = getString(R.string.label_greeting_user, name)
+        binding.textUserName.text = getString(R.string.label_greeting_user, name)
     }
 
     /**
@@ -125,12 +125,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
        when(id){
            R.id.image_all -> {
-               filter = MotivationConstants.PHRASE.ALL
+               filter = MotivationConstants.PHRASEFILTER.ALL
                highlightFilter(binding.imageAll)
            }
 
            R.id.image_happy -> {
-               filter = MotivationConstants.PHRASE.HAPPY
+               filter = MotivationConstants.PHRASEFILTER.HAPPY
                highlightFilter(binding.imageHappy)
 
                // Possível de trocar a fonte da imagem e atribuir ao elemento de layout
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
            }
 
            else -> {
-               filter = MotivationConstants.PHRASE.SUNNY
+               filter = MotivationConstants.PHRASEFILTER.SUNNY
                highlightFilter(binding.imageSunny)
            }
        }
