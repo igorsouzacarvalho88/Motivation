@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Inicializa
         handleFilter(R.id.image_all)
         refreshPhrase()
+
+        showAppVersion() // Chame aqui
     }
 
     /**
@@ -149,4 +151,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
       private  fun highlightFilter(view: ImageView) {
             view.setColorFilter(ContextCompat.getColor(this, R.color.white))
       }
+    private fun showAppVersion() {
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        val version = packageInfo.versionName
+        binding.textVersion.text = "v $version"
+    }
 }
