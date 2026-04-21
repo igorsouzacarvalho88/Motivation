@@ -6,12 +6,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.montyblank.motivation.MotivationConstants
 import com.montyblank.motivation.R
 import com.montyblank.motivation.databinding.ActivityMainBinding
+import com.montyblank.motivation.helper.SecurityPreferences
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var securityPreferences: SecurityPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +22,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setContentView(R.layout.activity_main)
+
+        securityPreferences = SecurityPreferences(this)
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -27,6 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         setListeners()
+        getUserName()
 
     }
     override fun onClick(v: View) {
@@ -35,12 +42,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun getUserName(){
+       val name = securityPreferences.getString(MotivationConstants.KEY.PERSON_NAME)
+        binding.textviewName.text = name
+    }
     private fun handleNewPhrase(){
 
     }
     private fun setListeners(){
         binding.buttonNewPhrase.setOnClickListener(this)
     }
-
-
 }
