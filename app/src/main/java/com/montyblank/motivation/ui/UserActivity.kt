@@ -26,41 +26,55 @@ class UserActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        securityPreferences = SecurityPreferences(this)
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+// Inicializa variáveis da classe
+        securityPreferences = SecurityPreferences(this)
+        securityPreferences = SecurityPreferences(this)
 
         setListeners()
+        // Acesso aos elementos de interface)
+        binding.buttonSave.setOnClickListener(this)
         verifyUserName()
 
     }
-    private fun verifyUserName(){
-        val name = securityPreferences.getString(MotivationConstants.KEY.PERSON_NAME)
-        if (name.isNotEmpty()){
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-    }
 
-
+    /**
+     * Lida com os eventos de click
+     * */
     override fun onClick(v: View) {
-        if (v.id == R.id.button_save){
+        val id: Int = v.id
+        if (id == R.id.button_save) {
             handleSave()
         }
     }
+
+    /**
+     * Verifica se usuário já preencheu o nome
+     * */
+    private fun verifyUserName(){
+        val name = securityPreferences.getStoreString(MotivationConstants.KEY.PERSON_NAME)
+        if (name.isNotEmpty()){
+            startActivity(Intent(this, MainActivity::class.java))
+            // Impede que seja possível voltar a Activity
+            finish()
+        }
+    }
     private fun handleSave(){
+        // Obtém o nome
         val name =binding.edittextName.text.toString()
 
+        // Verifica se usuário preencheu o nome
         if (name.isEmpty()){
-            Toast.makeText(this,"Informe seu nome!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,getString(R.string.error_mandatory_name), Toast.LENGTH_SHORT).show()
         }else{
+            // Salva os dados do usuário e redireciona para as frases
             securityPreferences.storeString(MotivationConstants.KEY.PERSON_NAME,name)
             startActivity(Intent(this, MainActivity::class.java))
+            // Impede que seja possível voltar a Activity
             finish()
         }
     }

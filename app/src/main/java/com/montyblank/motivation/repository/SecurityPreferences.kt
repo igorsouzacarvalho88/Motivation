@@ -12,7 +12,7 @@ class SecurityPreferences(context: Context) {
         shared.edit().putString(key, value).apply()
     }
 
-    fun getString(key: String): String{
+    fun getStoreString(key: String): String{
         return shared.getString(key, "") ?: ""
     }
 }

@@ -2,6 +2,7 @@ package com.montyblank.motivation.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -12,15 +13,16 @@ import com.montyblank.motivation.repository.PhraseRepository
 import com.montyblank.motivation.R
 import com.montyblank.motivation.databinding.ActivityMainBinding
 import com.montyblank.motivation.repository.SecurityPreferences
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var securityPreferences: SecurityPreferences
 
-    private val phraseRepository = PhraseRepository()
 
     private var filter  : Int = MotivationConstants.PHRASE.ALL
+    private val phraseRepository = PhraseRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,57 +38,115 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Inicializa variáveis
+        securityPreferences = SecurityPreferences(this)
 
+        // Adiciona eventos
         setListeners()
-        getUserName()
+
+        // Mostra o nome do usuário
+        showUserName()
+
+        // Inicializa
         handleFilter(R.id.image_all)
         refreshPhrase()
     }
+
+    /**
+    * Trata eventos de click
+    * */
     override fun onClick(v: View) {
+        val id: Int = v.id
+
 
        val listId = listOf(
-           R.id.image_all,R.id.image_happy,R.id.image_sunny
+           R.id.image_all,
+           R.id.image_happy,
+           R.id.image_sunny
        )
 
-        if(v.id == R.id.button_new_phrase){
+        if(id in listId){
+            handleFilter(id)
+        }else if(id == R.id.button_new_phrase){
             refreshPhrase()
-        } else if(v.id in listId){
-                handleFilter(v.id)
         }
     }
-    private fun refreshPhrase(){
-        binding.textviewPhrase.text = phraseRepository.getphrase(filter)
-    }
 
-    private fun handleFilter(id: Int){
-        binding.imageAll.setColorFilter(ContextCompat.getColor(this, R.color.black))
-        binding.imageHappy.setColorFilter(ContextCompat.getColor(this, R.color.black))
-        binding.imageSunny.setColorFilter(ContextCompat.getColor(this, R.color.black))
-
-       when(id){
-           R.id.image_all->{
-               filter = MotivationConstants.PHRASE.ALL
-               binding.imageAll.setColorFilter(ContextCompat.getColor(this, R.color.white))
-           }
-           R.id.image_happy->{
-               filter = MotivationConstants.PHRASE.HAPPY
-               binding.imageHappy.setColorFilter(ContextCompat.getColor(this, R.color.white))
-           }
-           R.id.image_sunny->{
-               filter = MotivationConstants.PHRASE.SUNNY
-               binding.imageSunny.setColorFilter(ContextCompat.getColor(this, R.color.white))
-           }
-       }
-    }
-
-    private fun getUserName(){
-       val name = securityPreferences.getString(MotivationConstants.KEY.PERSON_NAME)
-        binding.textviewName.text = name
-    }
+    /**
+     * Atribui eventos aos elementos
+     * */
     private fun setListeners(){
         binding.buttonNewPhrase.setOnClickListener(this)
         binding.imageAll.setOnClickListener(this)
         binding.imageHappy.setOnClickListener(this)
         binding.imageSunny.setOnClickListener(this)
     }
+
+    /**
+     * Atualiza frase de motivação
+     * */
+    private fun refreshPhrase(){
+        binding.textviewPhrase.text = phraseRepository.getPhrase(filter, Locale.getDefault().language)
+
+        /*
+           // Variações que podem ser feitas para obtenção da localização do dispotivo
+           Locale.getDefault().language // en
+           Locale.getDefault().isO3Language // eng
+           Locale.getDefault().country // US
+           Locale.getDefault().isO3Country // USA
+           Locale.getDefault().displayCountry // United States
+           Locale.getDefault().displayName // English (United States)
+           Locale.getDefault() // en_US
+           Locale.getDefault().displayLanguage // English
+           Locale.getDefault().toLanguageTag() // en-US
+           */
+    }
+
+    /**
+     * Busca o nome do usuário
+     * */
+    private fun showUserName() {
+        val name = securityPreferences.getStoreString(MotivationConstants.KEY.PERSON_NAME)
+        binding.textviewName.text = getString(R.string.label_greeting_user, name)
+    }
+
+    /**
+     * Trata o filtro aplicado para as frases
+     * */
+    private fun handleFilter(id: Int){
+        binding.imageAll.setColorFilter(ContextCompat.getColor(this, R.color.purple_dark))
+        binding.imageHappy.setColorFilter(ContextCompat.getColor(this, R.color.purple_dark))
+        binding.imageSunny.setColorFilter(ContextCompat.getColor(this, R.color.purple_dark))
+
+        // Outra maneira de obter o resultado das três linhas acima
+        /*listOf(binding.imageAll, binding.imageHappy, binding.imageSunny).forEach {
+            it.setColorFilter(ContextCompat.getColor(this, R.color.dark_purple))
+        }*/
+
+       when(id){
+           R.id.image_all -> {
+               filter = MotivationConstants.PHRASE.ALL
+               highlightFilter(binding.imageAll)
+           }
+
+           R.id.image_happy -> {
+               filter = MotivationConstants.PHRASE.HAPPY
+               highlightFilter(binding.imageHappy)
+
+               // Possível de trocar a fonte da imagem e atribuir ao elemento de layout
+               // binding.imageHappy.setImageResource(R.drawable.ic_all)
+           }
+
+           else -> {
+               filter = MotivationConstants.PHRASE.SUNNY
+               highlightFilter(binding.imageSunny)
+           }
+       }
+    }
+        /**
+         * Highlights the selected filter button.
+         */
+      private  fun highlightFilter(view: ImageView) {
+            view.setColorFilter(ContextCompat.getColor(this, R.color.white))
+      }
 }
