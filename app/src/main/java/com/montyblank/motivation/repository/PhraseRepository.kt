@@ -1,15 +1,17 @@
 package com.montyblank.motivation.repository
 
 import com.montyblank.motivation.helper.MotivationConstants
+import java.util.Random
 
 data class Phrase(val description: String, val category: Int)
 
 class PhraseRepository {
 
+    private val all = MotivationConstants.PHRASE.ALL
    private val happy = MotivationConstants.PHRASE.HAPPY
    private val sunny = MotivationConstants.PHRASE.SUNNY
 
-    private val ListPhrase: List<Phrase> = listOf(
+    private val listPhrase: List<Phrase> = listOf(
 
         Phrase("Não sabendo que era impossível, foi lá e fez.", happy),
         Phrase("Você não é derrotado quando perde, você é derrotado quando desiste!", happy),
@@ -26,8 +28,10 @@ class PhraseRepository {
         Phrase("Riscos devem ser corridos, porque o maior perigo é não arriscar nada!", sunny)
     )
 
-    fun getphrase(filter: Int): String{
-        //lógica
-        return "-------"
-    }
+    fun getphrase(filter: Int): String {
+
+            val filtered = listPhrase.filter { it.category == filter || filter == all }
+            val rand = Random().nextInt(filtered.size)
+            return filtered[rand].description
+        }
 }

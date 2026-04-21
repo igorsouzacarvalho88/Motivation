@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         getUserName()
         handleFilter(R.id.image_all)
         refreshPhrase()
-
     }
     override fun onClick(v: View) {
 
@@ -79,9 +78,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
            }
        }
     }
-
-
-
 
     private fun getUserName(){
        val name = securityPreferences.getString(MotivationConstants.KEY.PERSON_NAME)
