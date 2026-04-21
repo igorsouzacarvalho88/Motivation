@@ -8,10 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.montyblank.motivation.MotivationConstants
+import com.montyblank.motivation.helper.MotivationConstants
 import com.montyblank.motivation.R
 import com.montyblank.motivation.databinding.ActivityUserBinding
-import com.montyblank.motivation.helper.SecurityPreferences
+import com.montyblank.motivation.repository.SecurityPreferences
 
 class UserActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -36,8 +36,18 @@ class UserActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         setListeners()
+        verifyUserName()
 
     }
+    private fun verifyUserName(){
+        val name = securityPreferences.getString(MotivationConstants.KEY.PERSON_NAME)
+        if (name.isNotEmpty()){
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+    }
+
+
     override fun onClick(v: View) {
         if (v.id == R.id.button_save){
             handleSave()
@@ -50,8 +60,7 @@ class UserActivity : AppCompatActivity(), View.OnClickListener {
             Toast.makeText(this,"Informe seu nome!", Toast.LENGTH_SHORT).show()
         }else{
             securityPreferences.storeString(MotivationConstants.KEY.PERSON_NAME,name)
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }

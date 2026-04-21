@@ -1,15 +1,6 @@
-package com.montyblank.motivation.helper
+package com.montyblank.motivation.repository
 
 import android.content.Context
-
-//sharedPreferences
-//salvar informações > Chaves-Valor
-//leves - mudam com pouca frequencia.
-//Ex:Nome de usuário, senha, email.
-
-
-//Banco de dados totalmente diferente de sharedPreferences.
-//Armazenamento da informação, mas nã são iguais.
 
 class SecurityPreferences(context: Context) {
 
